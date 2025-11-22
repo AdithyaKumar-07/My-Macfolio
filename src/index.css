@@ -393,4 +393,63 @@ body {
             }
         }
     }
+
+    /* Conceptual CSS for Maximization and Minimization */
+
+    /* Maximize: Takes up the whole viewport */
+    .window.is-maximized {
+        width: 100vw !important;
+        height: 100vh !important;
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important; /* Disable any custom transforms */
+    }
+
+    /* Minimize: Visually hide the main window body, perhaps move it off-screen
+       or shrink it to a taskbar icon (which is typically a separate component).
+       For simplicity, this example just hides it from view. */
+    .window.is-minimized {
+        /* Hide the main body but keep it in the DOM */
+        visibility: hidden;
+        /* You would typically show an icon in a 'Taskbar' component
+           that calls focusWindow(windowKey) on click. */
+    }
+
+    /* Add this to your main CSS file */
+    #window-controls > .close,
+    #window-controls > .minimize,
+    #window-controls > .maximize,
+    #window-controls > .restore {
+        /* This ensures all control buttons show the hand cursor */
+        cursor: pointer;
+        /* This is also important if you are using background images for icons */
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    /* Crucial CSS Fix for Maximize */
+
+    /* 1. Define the base window frame for the HOC */
+
+    /* 2. MAXIMIZE STYLES: This must override everything else */
+    .window-frame.is-maximized {
+        /* Override width/height */
+        width: 100vw !important;
+        height: 100vh !important;
+
+        /* Override position (top/left) and disable Draggable's influence */
+        top: 0 !important;
+        left: 0 !important;
+
+        /* CRITICAL: This line disables the GSAP Draggable transform */
+        transform: none !important;
+    }
+
+    /* 3. Ensure the window is shown when maximized */
+    .window-frame.is-minimized {
+        /* This style is handled by useLayoutEffect in the HOC (display: none),
+           but if you use visibility: */
+        visibility: hidden;
+        pointer-events: none;
+    }
 }
